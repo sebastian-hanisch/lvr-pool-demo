@@ -1,7 +1,7 @@
 # Konstantprodukt-Markt und LVR – Streamlit-Demo
 
 <!-- TODO nach dem Deploy: direkt hierher den Live-Link setzen (Leerzeile davor und danach):
-**[→ Demo live ausprobieren](https://sebastianhanisch-konstantprodukt-markt-demo.streamlit.app/)** -->
+**[→ Demo live ausprobieren](https://sebastianhanisch-lvr-pool-demo.streamlit.app/)** -->
 
 > **Modell, keine Marktdaten, keine Anlageberatung.** Alle Pfade und Zahlen sind synthetisch; die Demo erklärt einen Mechanismus und gibt keine Empfehlung für Käufe, Verkäufe oder Anlagen.
 
