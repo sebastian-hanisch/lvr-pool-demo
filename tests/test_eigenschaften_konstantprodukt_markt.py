@@ -84,10 +84,12 @@ def test_the_lvr_rate_per_value_does_not_depend_on_the_drift_for_fine_steps():
         assert (a - g) / g / dt == pytest.approx(sigma ** 2 / 8, rel=2e-3)
 
 
-def test_the_expected_il_equals_minus_the_expected_lvr_only_without_drift():
+def test_the_expected_il_equals_minus_the_expected_lvr_without_drift_and_at_minus_sigma_squared_over_four_but_not_at_the_other_tested_drifts():
     for sigma in (0.3, 0.8, 1.2):
         for steps in (1, 10, 365):
             assert A.exact_il_value(C.POOL_V0, sigma, 0.0, 1.0) == pytest.approx(-A.exact_lvr_gbm(C.POOL_V0, sigma, 0.0, 1.0, steps), rel=1e-9)
+            mu_cross = -sigma ** 2 / 4
+            assert A.exact_il_value(C.POOL_V0, sigma, mu_cross, 1.0) == pytest.approx(-A.exact_lvr_gbm(C.POOL_V0, sigma, mu_cross, 1.0, steps), rel=1e-9)
         for mu in (-0.5, 0.5, 1.0):
             il, lvr = A.exact_il_value(C.POOL_V0, sigma, mu, 1.0), A.exact_lvr_gbm(C.POOL_V0, sigma, mu, 1.0, 365)
             assert il <= 0 and abs(il + lvr) > 1e-4 * C.POOL_V0

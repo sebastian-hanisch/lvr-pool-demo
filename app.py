@@ -93,7 +93,7 @@ with st.expander("So funktioniert der Pool", expanded=True):
     st.markdown(
         """
 1. **Handelsregel.** Der Pool hält $(x, y)$ mit $x \\cdot y = k$. Wer $\\Delta x$ kauft, zahlt $\\Delta y = y\\,\\Delta x/(x - \\Delta x)$; danach gilt wieder $x' y' = k$. Mit **Gebühr** $f$ gehen nur $1 - f$ des Eingangs in die Invariante ein, die Gebühr bleibt im Pool.
-2. **Preisauswirkung.** Kauft man den Anteil $s$ der Reserve, ist der mittlere Preis das $1/(1-s)$-fache des Anfangspreises und der Preis danach das $1/(1-s)^2$-fache.
+2. **Preisauswirkung.** Kauft man den Anteil $s$ der Reserve, ist (ohne Gebühr) der mittlere Preis das $1/(1-s)$-fache des Anfangspreises und der Preis danach das $1/(1-s)^2$-fache.
 3. **LVR.** Springt der Referenzpreis, bringen Arbitrageure den Pool auf den neuen Preis und behalten den Unterschied; der Pool-Wert wächst langsamer als der eines Bestands, der laufend zum Marktpreis nachgezogen wird. Die Rate ist $\\sigma^2/8$ des Poolwerts.
 4. **Warum das gilt:** Der Poolwert bei Preis $P$ ist $2\\sqrt{kP}$, eine konkave Funktion von $P$; ihre Krümmung mal die Varianz des Preises ist genau, was verloren geht.
         """
@@ -134,7 +134,7 @@ m2.metric("Mittlerer Preis", de(t.avg_price, 4), delta=f"{de(t.avg_ratio, 4)}-fa
 m3.metric("Preis danach", de(t.price_after, 4), delta=f"{de(t.after_ratio, 4)}-faches des Anfangspreises", delta_color="off")
 m4.metric("Gebühr im Pool", de(t.fee_paid), delta=f"k: {de(t.k_before, 0)} → {de(t.k_after, 0)}", delta_color="off")
 st.plotly_chart(build_impact(settings.fee), width="stretch", key="main_chart")
-st.caption("Preisauswirkung eines Kaufs: Wer den Anteil s der Reserve kauft, zahlt im Mittel das 1/(1−s)-fache und lässt den Preis auf das 1/(1−s)²-fache steigen (Pool 1 000 / 1 000; gestrichelt: der mittlere Preis mit der gewählten Gebühr).")
+st.caption("Preisauswirkung eines Kaufs: Wer den Anteil s der Reserve kauft, zahlt ohne Gebühr im Mittel das 1/(1−s)-fache und lässt den Preis auf das 1/(1−s)²-fache steigen (Pool 1 000 / 1 000; gestrichelt: der mittlere Preis mit der gewählten Gebühr).")
 st.markdown("\n".join(impact_header(settings.fee) + impact_rows(impact_table(settings.fee))))
 with st.expander("Mit Gebühr ist der Pfad nicht mehr gleichgültig – und Hin-und-zurück kostet"):
     st.markdown("**Dasselbe Ziel (10 % der Reserve kaufen) in n Stücken:**")
@@ -188,7 +188,7 @@ getattr(st, kind_l)(text_l)
 st.markdown("\n".join(STEPS_HEADER + steps_rows(an.steps_table)))
 st.caption(f"{C.LVR_PATHS} Pfade je Zeile (Seed {C.LVR_SEED}), ohne Gebühr. Die exakte Formel gilt für jede Zahl von Schritten: E[LVR] = V₀ Σ gⁱ (a − g) mit g = E[√(P'/P)] und a = (E[P'/P] + 1)/2; "
            "bei Drift 0 ist das 1 − exp(−σ²T/8), unabhängig von der Zahl der Schritte.")
-st.markdown("**Impermanent Loss gegen LVR.** Der Impermanent Loss vergleicht den Pool mit dem **Halten** des Anfangsbestands, der LVR mit dem **Rebalancieren**. Beide sind nur ohne Drift gleich groß.")
+st.markdown("**Impermanent Loss gegen LVR.** Der Impermanent Loss vergleicht den Pool mit dem **Halten** des Anfangsbestands, der LVR mit dem **Rebalancieren**. Ohne Drift sind beide gleich groß.")
 st.plotly_chart(build_drift(an.drift_table), width="stretch", key="drift_chart")
 st.markdown("\n".join(DRIFT_HEADER + drift_rows(an.drift_table)))
 kind_i, text_i = verdict_il(an.drift_table)

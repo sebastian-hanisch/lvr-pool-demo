@@ -143,7 +143,7 @@ def verdict_lvr(exact: float, sim: float, se: float, steps: int, sigma: float) -
 
 
 def verdict_il(rows: list) -> tuple[str, str]:
-    """Impermanent Loss gegen LVR über die Drift: nur ohne Drift gleich; wie weit gehen sie bei der größten Drift auseinander?"""
+    """Impermanent Loss gegen LVR über die Drift: ohne Drift gleich im Betrag; wie weit gehen sie bei der größten Drift auseinander?"""
     zero = min(rows, key=lambda r: abs(r["mu"]))
     top = max(rows, key=lambda r: abs(r["il_exact"] + r["lvr_exact"]))
     gap = abs(top["il_exact"]) - top["lvr_exact"]

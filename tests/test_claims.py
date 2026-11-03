@@ -98,7 +98,7 @@ def test_the_drift_sentences():
     assert all(abs(rows[m]["il_exact"] + rows[m]["lvr_exact"]) > 1e-3 for m in (-0.32, 0.32, 0.64))
     zs = [abs(r["lvr_sim"] - r["lvr_exact"]) / r["lvr_se"] for r in a.drift_table] + [abs(r["il_sim"] - r["il_exact"]) / r["il_se"] for r in a.drift_table]
     assert len(zs) == 8 and max(zs) <= 1.0
-    for part in ("**Nur ohne Drift sind beide im Betrag gleich** (7,69 %)", "(−17,70 % bei $\\mu = 0{,}64$)", "(9,11 %)", "Alle acht Simulationswerte der LVR- und Impermanent-Loss-Spalten liegen höchstens einen Standardfehler vom exakten Wert."):
+    for part in ("**Ohne Drift sind beide im Betrag gleich** (7,69 %)", "nur bei $\\mu = -\\sigma^2/4$ treffen sie sich noch einmal", "(−17,70 % bei $\\mu = 0{,}64$)", "der LVR deutlich weniger (9,11 %)", "Alle acht Simulationswerte der LVR- und Impermanent-Loss-Spalten liegen höchstens einen Standardfehler vom exakten Wert."):
         assert part in README, part
 
 
@@ -111,7 +111,7 @@ def test_the_fee_sentences():
     assert [r["profit"] for r in a.fee_table] == sorted((r["profit"] for r in a.fee_table), reverse=True)
     fine = ev.fee_table(0.8, 0.0, 2000)
     assert 0.45 < next(r for r in fine if r["fee"] == 0.01)["rel"] < 0.6 and next(r for r in fine if r["fee"] == 0.01)["rel"] < rows[0.01]["rel"]
-    for part in ("**Mit reinem Arbitrage-Fluss bleibt der Pool in jedem simulierten Pfad hinter dem Rebalancieren zurück**", "(der kleinste Pfad verliert zwischen 2,6 % und 3,6 % von $V_0$)", "bei 1 % auf 72,3 % des gebührenfreien Werts",
+    for part in ("**Mit reinem Arbitrage-Fluss bleibt der Pool in jedem simulierten Pfad hinter dem Rebalancieren zurück**", "per Konstruktion, da nur Arbitrage handelt (der kleinste Pfad verliert zwischen 2,6 % und 3,6 % von $V_0$)", "bei 1 % auf 72,3 % des gebührenfreien Werts",
                  "bei 0,3 % Gebühr etwa das 23-Fache des Anfangswerts im Jahr", "bei 2 000 Schritten im Jahr und 1 % Gebühr auf etwa die Hälfte des gebührenfreien Werts"):
         assert part in README, part
 

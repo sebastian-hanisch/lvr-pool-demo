@@ -55,7 +55,7 @@ PRESET_HELP = {
     "Handbeispiel A: 10 % der Reserve kaufen": "Pool 1 000 / 1 000: 100 Einheiten kosten 111,11, der mittlere Preis ist 1,1111, der Preis danach 1,2346; ohne Gebühr ist der Pfad gleichgültig.",
     "Handbeispiel B: Prognosemarkt auf 80 %": "Konstantprodukt mit Reserve 100 als Prognosemarkt: 150 Anteile für 100 treiben den Preis auf 0,8, die LMSR braucht 138,63 Anteile für 91,63.",
     "Halbe Reserve: der Preis vervierfacht sich": "Wer die Hälfte der Reserve kauft, zahlt im Mittel das Doppelte und lässt den Preis auf das Vierfache steigen.",
-    "Hohe Volatilität: der Pool verliert mehr": "Volatilität 1,2 statt 0,8: Der LVR wächst mit dem Quadrat, die Rate ist σ²/8 des Poolwerts.",
-    "Steigender Kurs: Impermanent Loss wächst": "Drift 0,6: Der Impermanent Loss (Pool gegen Halten) wächst, der LVR kaum; nur ohne Drift sind beide gleich.",
+    "Hohe Volatilität: der Pool verliert mehr": "Volatilität 1,2 statt 0,8: Die LVR-Rate wächst mit dem Quadrat der Volatilität (σ²/8 des Poolwerts).",
+    "Steigender Kurs: Impermanent Loss wächst": "Drift 0,6: Der Impermanent Loss (Pool gegen Halten) wächst, der LVR deutlich weniger; ohne Drift sind beide gleich groß.",
     "Hohe Gebühr, feine Schritte": "Gebühr 1 % bei 2 000 Schritten im Jahr: Die Gebühren mindern den Arbitrage-Verlust auf etwa die Hälfte, bleiben aber hinter ihm zurück.",
 }

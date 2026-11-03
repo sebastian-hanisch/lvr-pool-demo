@@ -13,7 +13,7 @@ Ein Pool braucht keine Gegenseite, aber er kennt den Preis **außerhalb** nicht.
 
 ## Modell
 
-Reserven $(x, y)$, $xy = k$, Preis $P = y/x$. Wer $\Delta x$ kauft, zahlt $\Delta y = y\,\Delta x/(x - \Delta x)$; mit Gebühr $f$ gehen nur $1 - f$ des Eingangs in die Invariante ein, die Gebühr bleibt im Pool und lässt $k$ wachsen. Kauft man den Anteil $s$ der Reserve, ist der mittlere Preis das $1/(1-s)$-fache und der Preis danach das $1/(1-s)^2$-fache des Anfangspreises.
+Reserven $(x, y)$, $xy = k$, Preis $P = y/x$. Wer $\Delta x$ kauft, zahlt $\Delta y = y\,\Delta x/(x - \Delta x)$; mit Gebühr $f$ gehen nur $1 - f$ des Eingangs in die Invariante ein, die Gebühr bleibt im Pool und lässt $k$ wachsen. Kauft man den Anteil $s$ der Reserve, ist (ohne Gebühr) der mittlere Preis das $1/(1-s)$-fache und der Preis danach das $1/(1-s)^2$-fache des Anfangspreises.
 
 **Brücke zur Kostenfunktion.** Zwei Ergebnis-Anteile $A$, $B$ (zahlen 1 bei Eintritt), ein vollständiger Satz lässt sich für 1 prägen. Ein Pool mit Reserven $(a, b)$, $ab = r^2$, hat den Preis $p_A = b/(a+b)$; wer $q$ will, zahlt $m = C(q)$ mit $(r + m - q_A)(r + m - q_B) = r^2$. Das ist eine Kostenfunktion: Preise $= \nabla C$, Summe 1, pfadunabhängige Kasse. Gerechnet wird nur dieses Beispiel, nicht der allgemeine Satz von Frongillo, Papireddygari und Waggoner.
 
@@ -28,7 +28,7 @@ Reserven $(x, y)$, $xy = k$, Preis $P = y/x$. Wer $\Delta x$ kauft, zahlt $\Delt
 
 ## Befunde (gemessen, keine Behauptungen)
 
-Alle Zahlen sind deterministisch (feste Seeds, nur `exp`, `log`, `sqrt` und Summen) und stehen in `tests/test_claims.py`.
+Alle Zahlen sind deterministisch (feste Seeds) und stehen in `tests/test_claims.py`.
 
 **Tabelle 1: Vier Handbeispiele** (jeder Wert von Hand nachrechenbar; A: $\Delta y = 1000 \cdot 100/900$; B: Reserven $(100\sqrt{0{,}2/0{,}8};\ 100\sqrt{0{,}8/0{,}2}) = (50;\ 200)$, 100 Sätze geprägt, $100 + 100 - 50 = 150$ Anteile A; C: Poolwert $2\sqrt{10^6 \cdot 4} = 4000$ gegen Halten $4 \cdot 1000 + 1000 = 5000$; D: $0{,}05^2/8 = 3{,}125 \cdot 10^{-4}$).
 
@@ -96,7 +96,7 @@ Bei Drift 0 ist der erwartete LVR $V_0(1 - e^{-\sigma^2 T/8}) = 7{,}688\ \%$ des
 | 0,32 | 8,35 % | 8,36 % ± 0,03 % | -10,53 % | -10,80 % ± 0,37 % |
 | 0,64 | 9,11 % | 9,13 % ± 0,04 % | -17,70 % | -18,23 % ± 0,61 % |
 
-**Nur ohne Drift sind beide im Betrag gleich** (7,69 %); mit Drift wächst der Impermanent Loss (−17,70 % bei $\mu = 0{,}64$), der LVR kaum (9,11 %): Der LVR ist die laufende Last der Liquiditätsgeber, der Impermanent Loss ein Vergleich mit dem Halten. Alle acht Simulationswerte der LVR- und Impermanent-Loss-Spalten liegen höchstens einen Standardfehler vom exakten Wert.
+**Ohne Drift sind beide im Betrag gleich** (7,69 %); mit Drift gehen sie im Allgemeinen auseinander (nur bei $\mu = -\sigma^2/4$ treffen sie sich noch einmal): Der Impermanent Loss wächst (−17,70 % bei $\mu = 0{,}64$), der LVR deutlich weniger (9,11 %). Der LVR ist die laufende Last der Liquiditätsgeber, der Impermanent Loss ein Vergleich mit dem Halten. Alle acht Simulationswerte der LVR- und Impermanent-Loss-Spalten liegen höchstens einen Standardfehler vom exakten Wert.
 
 **Tabelle 6: Gebühren** ($\sigma = 0{,}8$, $\mu = 0$, 365 Schritte, 5 000 Pfade, Seed 3, dieselben Pfade für alle Gebühren; „Arbitrage-Gewinn“ ist, was der Pool gegenüber dem Rebalancieren verliert, einschließlich der Gebühren, die im Pool bleiben; Ausgleichsvolumen = (Arbitrage-Gewinn / $V_0$) / Gebühr).
 
@@ -107,7 +107,7 @@ Bei Drift 0 ist der erwartete LVR $V_0(1 - e^{-\sigma^2 T/8}) = 7{,}688\ \%$ des
 | 0,30 % | 6,92 % | 90,0 % | 0,80 % | 94,3 % | 23,1 |
 | 1,00 % | 5,56 % | 72,3 % | 2,20 % | 81,4 % | 5,6 |
 
-**Mit reinem Arbitrage-Fluss bleibt der Pool in jedem simulierten Pfad hinter dem Rebalancieren zurück**, auch mit Gebühr (der kleinste Pfad verliert zwischen 2,6 % und 3,6 % von $V_0$); die Gebühren mindern den Verlust nur, bei 1 % auf 72,3 % des gebührenfreien Werts. Ausgleichen würde ihn erst der Handel von Nicht-Informierten im Wert des Ausgleichsvolumens, also bei 0,3 % Gebühr etwa das 23-Fache des Anfangswerts im Jahr. Mit feineren Schritten sinkt der Gewinn stärker: bei 2 000 Schritten im Jahr und 1 % Gebühr auf etwa die Hälfte des gebührenfreien Werts (Preset „Hohe Gebühr, feine Schritte“).
+**Mit reinem Arbitrage-Fluss bleibt der Pool in jedem simulierten Pfad hinter dem Rebalancieren zurück**, auch mit Gebühr, per Konstruktion, da nur Arbitrage handelt (der kleinste Pfad verliert zwischen 2,6 % und 3,6 % von $V_0$); die Gebühren mindern den Verlust nur, bei 1 % auf 72,3 % des gebührenfreien Werts. Ausgleichen würde ihn erst der Handel von Nicht-Informierten im Wert des Ausgleichsvolumens, also bei 0,3 % Gebühr etwa das 23-Fache des Anfangswerts im Jahr. Mit feineren Schritten sinkt der Gewinn stärker: bei 2 000 Schritten im Jahr und 1 % Gebühr auf etwa die Hälfte des gebührenfreien Werts (Preset „Hohe Gebühr, feine Schritte“).
 
 ## Ehrliche Grenzen
 
@@ -123,10 +123,10 @@ Bei Drift 0 ist der erwartete LVR $V_0(1 - e^{-\sigma^2 T/8}) = 7{,}688\ \%$ des
 
 - **Kern:** die vier Handbeispiele von Hand; Tauschfunktionen von Hand; die exakte Formel für zwei Schritte von Hand; Pfad-Identität (Rebalancieren minus Pool gleich Summe der Gewinne).
 - **Orakel (anderer Rechenweg):** die Handelsmenge gegen **Bisektion über die Tauschfunktion** (mit und ohne Gebühr); die **geschlossene Arbitrage-Menge gegen Bisektion**, Grenzpreis inklusive Gebühr gleich dem Referenzpreis, kein Handel im Band; die Kostenfunktion der Brücke gegen eine **explizite Kette „Sätze prägen, dann tauschen“** mit Bisektion statt quadratischer Formel, Preise gegen finite Differenzen, beide Ausgänge einzeln gegen die Grenze $r$; der **erwartete LVR gegen die Aufzählung aller $2^n$ Pfade eines Binomialbaums** mit expliziter Arbitrage Schritt für Schritt, einen Schritt gegen **numerische Integration** (`scipy.integrate.quad`), und gegen die Simulation mit vier Standardfehlern; die vektorisierte Simulation gegen **dieselben Zufallszüge Schritt für Schritt** über die Tauschfunktionen (mit und ohne Gebühr); der Impermanent Loss über die Reserven.
-- **Eigenschaftstests:** Produkt bleibt ohne Gebühr und wächst mit Gebühr; Hin und zurück gratis ohne Gebühr, nie gratis mit Gebühr; Preis steigt monoton; Skalierung und Vertauschen der Güter; Arbitrage-Gewinn nichtnegativ; LVR skaliert mit dem Wert und mit $\sigma^2$; die Rate hängt nicht von der Drift ab; Impermanent Loss gleich −LVR nur ohne Drift; mehr Gebühr, weniger Arbitrage-Gewinn auf denselben Pfaden; Brücke: konvex, Verlust unter $r$, tiefer als die LMSR an jedem Preis über 1/2; Literaturtests ($\sigma^2/8$, LVR gegen Impermanent Loss, Kostenfunktionsmarkt am Beispiel).
+- **Eigenschaftstests:** Produkt bleibt ohne Gebühr und wächst mit Gebühr; Hin und zurück gratis ohne Gebühr, nie gratis mit Gebühr; Preis steigt monoton; Skalierung und Vertauschen der Güter; Arbitrage-Gewinn nichtnegativ; LVR skaliert mit dem Wert und mit $\sigma^2$; die Rate hängt nicht von der Drift ab; Impermanent Loss gleich −LVR ohne Drift und bei $\mu = -\sigma^2/4$, bei den getesteten übrigen Driften nicht; mehr Gebühr, weniger Arbitrage-Gewinn auf denselben Pfaden; Brücke: konvex, Verlust unter $r$, tiefer als die LMSR an jedem Preis über 1/2; Literaturtests ($\sigma^2/8$, LVR gegen Impermanent Loss, Kostenfunktionsmarkt am Beispiel).
 - **Randfälle:** kleinste und größte Handelsgrößen, Gebühren, Preise, Volatilität, Drift und Schrittzahlen; ein Schritt; keine Volatilität; Preis im Gebührenband; ungültige Eingaben; Zahlen, die auf null runden, ohne Vorzeichen; Laufzeit am Worst Case.
 - **Verdikte** als reine Funktionen an handgesetzten Werten; **Presets, Layout, AppTest-Rauchtest** (jeder Button, jeder Regler an Minimum und Maximum), **Footer**, **Laufzeit-Importe**.
-- **Behauptungen:** `tests/test_claims.py` rechnet jede Zahl dieser Datei nach.
+- **Behauptungen:** `tests/test_claims.py` rechnet jede Tabellenzahl dieser Datei nach und prüft die Sätze an Textfragmenten.
 - **Umfang:** siehe `pytest tests/`; `tools/readme_rows.py` ist kein Test, sondern erzeugt die Tabellen, die `test_claims.py` prüft.
 - **Nicht gelaufen:** Mutationstests (seit 2026-10-28 nicht mehr Teil des Ablaufs); die Aussagenprüfung durch unabhängige Prüfer steht noch aus.
 
